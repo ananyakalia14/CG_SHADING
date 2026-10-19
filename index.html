@@ -3,104 +3,2165 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="theme-color" content="#080a10" />
-<title>TIME MACHINE // Shading Run</title>
+<meta name="theme-color" content="#05070a" />
+<title>SIGNAL / SHIFT // Real-Time Shading Laboratory</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎️</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
+  }
+}
+</script>
 <style>
-:root{color-scheme:dark;--bg:#080a10;--panel:#0d111acc;--line:#252c38;--muted:#77808d;--text:#f1f3f5;--cyan:#57e7f2;--pink:#ff4ba8;--lime:#c9ff52;--orange:#ffb34b}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif}button,input{font:inherit}.app{height:100%;display:grid;grid-template-rows:68px 1fr 116px;position:relative;isolation:isolate;background:radial-gradient(ellipse at 50% 38%,#141b27 0,#080a10 62%)}.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid #ffffff10;background:#080a10d9;z-index:3}.brand{display:flex;align-items:center;gap:12px}.brand-mark{display:grid;place-items:center;width:29px;height:29px;border:1px solid var(--cyan);color:var(--cyan);font-size:14px;transform:rotate(45deg)}.brand-mark span{transform:rotate(-45deg)}.brand-name{font-size:12px;letter-spacing:.18em;font-weight:700}.brand-name small{display:block;color:var(--muted);font:9px 'DM Mono',monospace;letter-spacing:.15em;margin-top:3px}.top-meta{display:flex;align-items:center;gap:18px;color:var(--muted);font:10px 'DM Mono',monospace;letter-spacing:.1em}.live{color:var(--lime);display:flex;align-items:center;gap:7px}.live:before{content:'';width:6px;height:6px;border-radius:99px;background:currentColor;box-shadow:0 0 10px currentColor}.stage{position:relative;overflow:hidden}.stage:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#080a1040 0%,transparent 30%,transparent 75%,#080a10a8 100%),linear-gradient(90deg,#080a1066,transparent 20%,transparent 80%,#080a1066);z-index:1}.scene{position:absolute;inset:0}.scene canvas{width:100%;height:100%;display:block}.hud{position:absolute;z-index:2;inset:0;pointer-events:none;padding:24px 28px;display:flex;justify-content:space-between}.readout{font:10px 'DM Mono',monospace;letter-spacing:.1em;color:#aeb8c5;text-transform:uppercase}.readout strong{display:block;color:var(--cyan);font:500 20px 'Space Grotesk',sans-serif;letter-spacing:.02em;margin:7px 0}.readout.right{text-align:right}.readout.right strong{color:var(--pink)}.reticle{position:absolute;left:50%;top:50%;width:25px;height:25px;opacity:.36;transform:translate(-50%,-50%)}.reticle:before,.reticle:after{content:'';position:absolute;background:#dce8ee}.reticle:before{left:12px;top:0;width:1px;height:25px}.reticle:after{top:12px;left:0;width:25px;height:1px}.mode-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid #57e7f255;padding:6px 9px;color:var(--cyan);background:#08121699;font:9px 'DM Mono',monospace;letter-spacing:.09em;margin-top:7px}.mode-chip:before{content:'';width:5px;height:5px;background:currentColor;box-shadow:0 0 8px currentColor;border-radius:50%}.bottom{z-index:3;display:grid;grid-template-columns:minmax(210px,1fr) minmax(340px,1.65fr) minmax(210px,1fr);align-items:center;gap:28px;padding:16px 28px 18px;background:#0a0d13;border-top:1px solid var(--line)}.era-block{display:flex;flex-direction:column;gap:6px}.era-label{font:9px 'DM Mono',monospace;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}.era-title{font-size:15px;letter-spacing:.02em;font-weight:600}.era-title em{font-style:normal;color:var(--cyan)}.era-desc{color:#8d97a4;font-size:10px;line-height:1.5;max-width:260px}.slider-area{display:flex;flex-direction:column;gap:9px}.slider-head{display:flex;justify-content:space-between;align-items:center;color:#aab3bf;font:9px 'DM Mono',monospace;letter-spacing:.12em}.slider-head span:last-child{color:var(--cyan)}.range-wrap{position:relative;padding:4px 0}.range-wrap:before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--pink),#39424f 50%,var(--cyan));transform:translateY(-50%);opacity:.8}input[type=range]{appearance:none;position:relative;width:100%;height:14px;background:transparent;outline:0;cursor:ew-resize;margin:0}input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;background:var(--bg);border:2px solid var(--cyan);box-shadow:0 0 12px #57e7f288;border-radius:50%}input[type=range]::-moz-range-thumb{width:11px;height:11px;background:var(--bg);border:2px solid var(--cyan);box-shadow:0 0 12px #57e7f288;border-radius:50%}.ticks{display:flex;justify-content:space-between;color:#697482;font:8px 'DM Mono',monospace;letter-spacing:.08em}.ticks b{font-weight:400}.switches{display:flex;justify-content:flex-end;align-items:center;gap:17px}.thermal-btn,.pause-btn{border:1px solid #39414c;background:#10151d;color:#aeb8c5;padding:9px 11px;cursor:pointer;font:9px 'DM Mono',monospace;letter-spacing:.09em;text-transform:uppercase;transition:.18s}.thermal-btn:hover,.pause-btn:hover{border-color:#a4b0bd;color:var(--text)}.thermal-btn[aria-pressed=true]{border-color:var(--lime);color:var(--lime);box-shadow:inset 0 0 18px #c9ff5211}.thermal-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--lime);margin-right:7px;box-shadow:0 0 8px currentColor}.thermal-btn[aria-pressed=true] .thermal-dot{background:var(--orange);color:var(--orange)}.pause-btn{width:35px;height:35px;padding:0;font-size:13px}.corner{position:absolute;bottom:132px;right:28px;z-index:2;font:8px 'DM Mono',monospace;color:#697482;letter-spacing:.12em}.thermal-legend{display:none;position:absolute;z-index:3;right:28px;top:72px;font:9px 'DM Mono',monospace;color:#ced4db;background:#0b0e13d9;border:1px solid #ffffff20;padding:9px 11px;line-height:1.8;letter-spacing:.05em}.thermal-legend.show{display:block}.swatch{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:#72ff83}.swatch.hot{background:#ff5757}.scanlines{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.08;background:repeating-linear-gradient(0deg,transparent 0 3px,#c3d5e5 4px)}.intro{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:4;text-align:center;pointer-events:none;opacity:1;transition:opacity .6s}.intro.hide{opacity:0}.intro .eyebrow{font:9px 'DM Mono',monospace;letter-spacing:.25em;color:var(--cyan);margin-bottom:9px}.intro h1{font-size:clamp(24px,4vw,44px);line-height:1;margin:0 0 10px;letter-spacing:-.06em;text-shadow:0 5px 36px #000}.intro p{margin:0;font:10px 'DM Mono',monospace;letter-spacing:.08em;color:#b7c0ca}.keycap{display:inline-block;border:1px solid #ffffff50;padding:2px 5px;color:var(--text);margin:0 2px}
-@media(max-width:760px){.app{grid-template-rows:58px 1fr auto}.topbar{padding:0 16px}.top-meta{gap:9px}.top-meta .optional{display:none}.hud{padding:17px 16px}.bottom{grid-template-columns:1fr 1fr;gap:14px;padding:13px 16px 14px}.slider-area{grid-column:1/-1;grid-row:1}.era-block{grid-column:1;grid-row:2}.switches{grid-column:2;grid-row:2}.era-desc{display:none}.corner{right:16px;bottom:178px}.readout strong{font-size:16px}}@media(max-width:430px){.top-meta{font-size:8px}.brand-name{font-size:10px}.bottom{grid-template-columns:1fr auto}.switches{gap:7px}.thermal-btn{font-size:8px;padding:8px}.era-title{font-size:13px}.intro{width:88%}.hud .right{max-width:90px}}
+:root {
+  color-scheme: dark;
+  --bg-deep: #05070a;
+  --bg-card: rgba(11, 15, 23, 0.92);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-active: rgba(0, 240, 255, 0.45);
+  --text-main: #f0f4f8;
+  --text-muted: #828e9e;
+  --text-dim: #4d5766;
+  --cyan: #00f0ff;
+  --cyan-glow: rgba(0, 240, 255, 0.4);
+  --pink: #ff2a85;
+  --pink-glow: rgba(255, 42, 133, 0.4);
+  --lime: #00ff88;
+  --amber: #ffaa00;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  color: var(--text-main);
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input { font: inherit; }
+
+.app {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-rows: 64px 1fr auto;
+  position: relative;
+  isolation: isolate;
+  background: radial-gradient(ellipse at 50% 25%, #0f1522 0%, #05070a 75%);
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(5, 7, 10, 0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand-mark {
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--cyan);
+  display: grid;
+  place-items: center;
+  color: var(--cyan);
+  font-size: 14px;
+  transform: rotate(45deg);
+  box-shadow: 0 0 14px var(--cyan-glow);
+}
+.brand-mark span { transform: rotate(-45deg); display: block; }
+.brand-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-name small {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.14em;
+  margin-top: 2px;
+}
+
+.topbar-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cam-btn-group, .color-btn-group {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+.pill-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 5px 11px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pill-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.06);
+}
+.pill-btn.active {
+  background: var(--cyan);
+  color: #05070a;
+  font-weight: 600;
+  box-shadow: 0 0 12px var(--cyan-glow);
+}
+
+.color-dot {
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.color-dot:hover { transform: scale(1.18); }
+.color-dot.active { border-color: #ffffff; transform: scale(1.25); box-shadow: 0 0 8px currentColor; }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--lime);
+  background: rgba(0, 255, 136, 0.08);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  padding: 4px 9px;
+  border-radius: 99px;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 8px var(--lime);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+.icon-btn:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan-glow);
+}
+.icon-btn.active {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+/* STAGE & CANVAS */
+.stage {
+  position: relative;
+  overflow: hidden;
+  width: 100%; height: 100%;
+}
+.scene-container {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+}
+.scene-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* RAIN DROPS OVERLAY ON CAMERA LENS */
+.screen-rain-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* CINEMATIC OVERLAYS */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, transparent 55%, rgba(5, 7, 10, 0.65) 100%);
+  z-index: 1;
+}
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background: repeating-linear-gradient(0deg, transparent 0 2px, #fff 3px);
+  z-index: 1;
+}
+
+/* HUD OVERLAYS */
+.hud-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 2;
+}
+
+.hud-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+}
+
+.hud-speedometer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 190px;
+}
+.telemetry-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.speed-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+.speed-unit {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+.gear-badge {
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--cyan);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  font-family: 'DM Mono', monospace;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.rpm-bar-wrap {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.rpm-fill {
+  width: 72%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--pink));
+  border-radius: 3px;
+  box-shadow: 0 0 10px var(--cyan);
+}
+.telemetry-sub {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* SHADING ENGINE CARD (TOP RIGHT) */
+.hud-shading-card {
+  text-align: right;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.shading-pass-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.shading-pass-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.shading-meta-badges {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 4px;
+}
+.meta-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+}
+.meta-chip.highlight {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0, 240, 255, 0.08);
+}
+
+/* RETICLE / TARGET CENTER */
+.center-reticle {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px; height: 30px;
+  pointer-events: none;
+  opacity: 0.25;
+}
+.center-reticle::before, .center-reticle::after {
+  content: '';
+  position: absolute;
+  background: #ffffff;
+}
+.center-reticle::before { top: 0; left: 14px; width: 2px; height: 30px; }
+.center-reticle::after { top: 14px; left: 0; width: 30px; height: 2px; }
+
+/* CONTROLS HINT TOAST */
+.controls-hint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(9, 13, 20, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 8px 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+.controls-hint kbd {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-weight: 500;
+}
+
+/* THERMAL LEGEND OVERLAY */
+.thermal-legend {
+  position: absolute;
+  top: 96px;
+  right: 28px;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  display: none;
+  z-index: 5;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+.thermal-legend.show { display: block; }
+.thermal-gradient-bar {
+  width: 160px; height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #00ff88 0%, #ffff00 45%, #ff2a85 80%, #b537f2 100%);
+  margin: 8px 0;
+}
+.thermal-legend-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px;
+  color: var(--text-muted);
+}
+
+/* SHADER CODE INSPECTOR DRAWER */
+.shader-inspector {
+  position: absolute;
+  left: 28px;
+  bottom: 24px;
+  width: 380px;
+  background: var(--bg-card);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  z-index: 6;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  display: none;
+  pointer-events: auto;
+}
+.shader-inspector.show { display: block; }
+.inspector-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+.inspector-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.inspector-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 15px;
+}
+.formula-block {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--lime);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  word-break: break-all;
+}
+.code-preview {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: #abb2bf;
+  background: #06090e;
+  border-radius: 6px;
+  padding: 10px;
+  line-height: 1.5;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+/* BOTTOM DOCK & TIME MACHINE CONTROLS */
+.bottom-dock {
+  background: rgba(7, 10, 15, 0.94);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  padding: 18px 28px 22px;
+  display: grid;
+  grid-template-columns: 280px 1fr 340px;
+  align-items: center;
+  gap: 28px;
+  z-index: 10;
+}
+
+.era-desc-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.era-label-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.era-main-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.era-year-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--cyan);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
+.era-summary-text {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  max-width: 270px;
+}
+
+/* SLIDER CENTER CONTROL */
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.slider-meta-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+.slider-meta-head span:last-child {
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+.slider-track-wrapper {
+  position: relative;
+  padding: 6px 0;
+}
+.slider-track-bg {
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, #ff2a85 0%, #ffaa00 35%, #00f0ff 70%, #00ff88 100%);
+  border-radius: 99px;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+input[type=range] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 20px;
+  background: transparent;
+  outline: none;
+  cursor: ew-resize;
+  position: relative;
+  z-index: 2;
+  margin: 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #05070a;
+  border: 2.5px solid var(--cyan);
+  box-shadow: 0 0 16px var(--cyan), inset 0 0 6px var(--cyan);
+  cursor: ew-resize;
+  transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+input[type=range]::-moz-range-thumb {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #05070a;
+  border: 2.5px solid var(--cyan);
+  box-shadow: 0 0 16px var(--cyan);
+  cursor: ew-resize;
+}
+
+.slider-quick-tiers {
+  display: flex;
+  justify-content: space-between;
+}
+.tier-btn {
+  background: transparent;
+  border: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.tier-btn:hover { color: var(--text-main); }
+.tier-btn.active { color: var(--cyan); font-weight: 600; text-shadow: 0 0 8px var(--cyan-glow); }
+
+/* SWITCHES & UTILITY ACTIONS (RIGHT) */
+.dock-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+.action-toggle-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 8px 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.action-toggle-btn:hover {
+  color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.07);
+}
+.action-toggle-btn.active {
+  border-color: var(--lime);
+  color: var(--lime);
+  background: rgba(0, 255, 136, 0.1);
+  box-shadow: inset 0 0 15px rgba(0, 255, 136, 0.15);
+}
+.action-toggle-btn.rain-active {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0, 240, 255, 0.12);
+  box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.2);
+}
+.action-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text-dim);
+}
+.action-toggle-btn.active .action-dot {
+  background: var(--lime);
+  box-shadow: 0 0 8px var(--lime);
+}
+.action-toggle-btn.rain-active .action-dot {
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.pause-play-btn {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+.pause-play-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan-glow);
+}
+
+/* RESPONSIVE BREAKPOINTS */
+@media (max-width: 1024px) {
+  .bottom-dock {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 14px 20px 18px;
+  }
+  .era-desc-box { display: none; }
+  .dock-actions { justify-content: space-between; }
+}
+@media (max-width: 720px) {
+  .topbar { padding: 0 16px; }
+  .topbar-center { display: none; }
+  .hud-layer { padding: 16px; }
+  .hud-speedometer { min-width: 150px; }
+  .speed-val { font-size: 26px; }
+  .hud-shading-card { min-width: 160px; }
+  .shading-pass-title { font-size: 15px; }
+  .controls-hint { display: none; }
+}
 </style>
 </head>
 <body>
 <div class="app">
+  <!-- TOPBAR -->
   <header class="topbar">
-    <div class="brand"><div class="brand-mark"><span>↗</span></div><div class="brand-name">SIGNAL / SHIFT<small>REAL-TIME SHADING LAB</small></div></div>
-    <div class="top-meta"><span>RUN 01</span><span class="optional">TOKYO · 02:16 AM</span><span class="live">LIVE RENDER</span></div>
+    <div class="brand">
+      <div class="brand-mark"><span>↗</span></div>
+      <div class="brand-name">
+        SIGNAL / SHIFT
+        <small>REAL-TIME SHADING LABORATORY</small>
+      </div>
+    </div>
+
+    <div class="topbar-center">
+      <!-- CAMERA SELECTOR -->
+      <div class="cam-btn-group">
+        <button class="pill-btn active" id="camChase" title="Dynamic Third-Person Chase Cam"><span>[1]</span> CHASE</button>
+        <button class="pill-btn" id="camHood" title="Low-Angle Hood Reflections Cam"><span>[2]</span> HOOD</button>
+        <button class="pill-btn" id="camCockpit" title="Driver Cockpit Dashboard Cam"><span>[3]</span> COCKPIT</button>
+        <button class="pill-btn" id="camOrbit" title="360° Free Mouse Orbit Cam"><span>[4]</span> ORBIT</button>
+      </div>
+
+      <!-- CAR PAINT COLOR SELECTOR -->
+      <div class="color-btn-group" title="Select Automotive Paint Coating">
+        <div class="color-dot active" data-color="#080b10" style="background:#080b10" title="Obsidian Stealth"></div>
+        <div class="color-dot" data-color="#00d4ff" style="background:#00d4ff" title="Tokyo Cyber Cyan"></div>
+        <div class="color-dot" data-color="#ff124d" style="background:#ff124d" title="Neo Crimson Pearl"></div>
+        <div class="color-dot" data-color="#cfd8e3" style="background:#cfd8e3" title="Liquid Titanium"></div>
+        <div class="color-dot" data-color="#00ff88" style="background:#00ff88" title="Acid Emerald"></div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="status-pill"><span class="status-dot"></span><span id="fpsCount">60 FPS</span></div>
+      <button class="icon-btn active" id="weatherBtn" title="Toggle Wet Highway & Rainstorm (Key: R)">🌧️</button>
+      <button class="icon-btn" id="audioBtn" title="Toggle Night Drive Engine Synthesizer (Key: M)">🔊</button>
+      <button class="icon-btn" id="codeBtn" title="Inspect GLSL Shader Formula & Math (Key: I)">∑</button>
+    </div>
   </header>
+
+  <!-- 3D STAGE -->
   <main class="stage">
-    <div class="scene" id="scene"></div><div class="scanlines"></div>
-    <div class="hud"><div class="readout">SPEED<strong><span id="speed">126</span> <small style="font-size:10px;color:#8894a1">KM/H</small></strong><span>NEON DISTRICT / LOOP 07</span></div><div class="readout right">SHADING PASS<strong id="passLabel">PIXEL PHONG</strong><span class="mode-chip" id="modeChip">2006 · PER-PIXEL</span></div><div class="reticle"></div></div>
-    <div class="intro" id="intro"><div class="eyebrow">A REAL-TIME SHADING EXPERIMENT</div><h1>ONE ROAD.<br>TWO ERAS.</h1><p>DRAG THE SLIDER TO SHIFT THE LIGHT <span class="keycap">→</span></p></div>
-    <div class="thermal-legend" id="thermalLegend"><div id="thermalReadout"><span class="swatch"></span>VERTEX LIT · LOWER SHADING COST</div><div style="color:#87919d;margin-top:4px">COLOR TRACKS SHADING WORK</div></div>
-    <div class="corner">THREE.JS · LIVE MATERIAL STUDY</div>
+    <div class="scene-container" id="webglContainer"></div>
+    <canvas class="screen-rain-canvas" id="rainDropCanvas"></canvas>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+
+    <!-- HUD OVERLAYS -->
+    <div class="hud-layer">
+      <!-- SPEEDOMETER -->
+      <div class="hud-panel hud-speedometer">
+        <div class="telemetry-row">
+          <div class="speed-val" id="speedDisplay">128</div>
+          <div class="speed-unit">KM/H</div>
+          <div class="gear-badge" id="gearDisplay">GEAR 5</div>
+        </div>
+        <div class="rpm-bar-wrap">
+          <div class="rpm-fill" id="rpmBar"></div>
+        </div>
+        <div class="telemetry-sub">
+          <span>RPM: <b id="rpmDisplay" style="color:var(--text-main)">6,240</b></span>
+          <span>LATERAL G: <b>0.14G</b></span>
+        </div>
+      </div>
+
+      <!-- SHADING PASS TELEMETRY -->
+      <div class="hud-panel hud-shading-card">
+        <div class="shading-pass-tag">ACTIVE SHADING PIPELINE</div>
+        <div class="shading-pass-title" id="passTitleDisplay">2026 NEXT-GEN PBR</div>
+        <div class="shading-meta-badges">
+          <span class="meta-chip highlight" id="evalTargetChip">PIXEL GGX + DUAL CLEARCOAT</span>
+          <span class="meta-chip" id="gpuCostChip">ALU: ~240 FLOP/PX</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER RETICLE -->
+    <div class="center-reticle"></div>
+
+    <!-- CONTROLS HINT TOAST -->
+    <div class="controls-hint">
+      <span>SLIDER: <kbd>←</kbd> <kbd>→</kbd></span>
+      <span>CAM: <kbd>1</kbd>-<kbd>4</kbd></span>
+      <span>WIREFRAME: <kbd>W</kbd></span>
+      <span>RAIN: <kbd>R</kbd></span>
+      <span>PAUSE: <kbd>SPACE</kbd></span>
+    </div>
+
+    <!-- THERMAL GPU HEATMAP LEGEND -->
+    <div class="thermal-legend" id="thermalLegendBox">
+      <div>GPU SHADER COMPUTE INTENSITY</div>
+      <div class="thermal-gradient-bar"></div>
+      <div class="thermal-legend-labels">
+        <span>LOW (VERTEX)</span>
+        <span>MEDIUM</span>
+        <span>HIGH (MICROFACET PBR)</span>
+      </div>
+    </div>
+
+    <!-- LIVE GLSL FORMULA INSPECTOR -->
+    <div class="shader-inspector" id="shaderInspector">
+      <div class="inspector-head">
+        <div class="inspector-title" id="formulaTitle">2026 PBR MICROFACET FORMULA</div>
+        <button class="inspector-close" id="closeInspectorBtn">✕</button>
+      </div>
+      <div class="formula-block" id="formulaMath">
+        f_r = (D_GGX · F_Schlick · G_Smith) / (4 · (N·V)(N·L)) + Clearcoat
+      </div>
+      <div class="code-preview" id="shaderCodePreview">
+// Fragment evaluation
+vec3 N = normalize(vNormal);
+vec3 V = normalize(cameraPosition - vWorld);
+vec3 H = normalize(L + V);
+float NdotH = max(dot(N, H), 0.0);
+float D = alpha2 / (PI * pow(NdotH*NdotH*(alpha2-1.0)+1.0, 2.0));
+      </div>
+    </div>
   </main>
-  <footer class="bottom">
-    <section class="era-block"><div class="era-label">CURRENT MATERIAL</div><div class="era-title" id="eraTitle"><em>2006</em> &nbsp;Pixel Phong</div><div class="era-desc" id="eraDesc">Per-fragment highlights hold their shape across every curve.</div></section>
-    <section class="slider-area"><div class="slider-head"><span>TIME MACHINE</span><span id="sliderHint">SHIFT TO COMPARE</span></div><div class="range-wrap"><input id="eraSlider" aria-label="Time Machine shading era" type="range" min="0" max="100" value="100" /></div><div class="ticks"><b>1996&nbsp; · &nbsp;VERTEX GOURAUD</b><b>2006&nbsp; · &nbsp;PIXEL PHONG</b></div></section>
-    <section class="switches"><button id="thermalBtn" class="thermal-btn" aria-pressed="false"><span class="thermal-dot"></span>THERMAL GPU</button><button id="pauseBtn" class="pause-btn" aria-label="Pause scene" title="Pause / resume">Ⅱ</button></section>
+
+  <!-- BOTTOM DOCK -->
+  <footer class="bottom-dock">
+    <!-- ERA DESCRIPTION -->
+    <div class="era-desc-box">
+      <div class="era-label-tag">GRAPHICS ARCHITECTURE</div>
+      <div class="era-main-title">
+        <span class="era-year-badge" id="eraBadge">2026</span>
+        <span id="eraHeading">Next-Gen PBR Clearcoat</span>
+      </div>
+      <div class="era-summary-text" id="eraSummary">
+        Physically-based microfacet specular (GGX), Fresnel reflections, and a high-gloss secondary lacquer layer.
+      </div>
+    </div>
+
+    <!-- TIME MACHINE SLIDER -->
+    <div class="slider-container">
+      <div class="slider-meta-head">
+        <span>TIME MACHINE // SHADING EVOLUTION</span>
+        <span id="sliderValueText">100% · NEXT-GEN PBR</span>
+      </div>
+      <div class="slider-track-wrapper">
+        <div class="slider-track-bg"></div>
+        <input type="range" id="eraSlider" min="0" max="100" value="100" aria-label="Shading Era Time Machine Slider" />
+      </div>
+      <div class="slider-quick-tiers">
+        <button class="tier-btn" id="btnTier1996">1996 · GOURAUD</button>
+        <button class="tier-btn" id="btnTier2006">2006 · PHONG</button>
+        <button class="tier-btn active" id="btnTier2026">2026 · PBR CLEARCOAT</button>
+      </div>
+    </div>
+
+    <!-- DOCK ACTIONS -->
+    <div class="dock-actions">
+      <button class="action-toggle-btn rain-active" id="dockRainBtn" title="Toggle Heavy Rainstorm & Road Wetness">
+        <span class="action-dot"></span>RAIN STORM
+      </button>
+      <button class="action-toggle-btn" id="thermalBtn" aria-pressed="false" title="Visualize GPU Shader Load Heatmap">
+        <span class="action-dot"></span>THERMAL GPU
+      </button>
+      <button class="action-toggle-btn" id="wireframeBtn" aria-pressed="false" title="Toggle Mesh Polygon Wireframe">
+        <span class="action-dot"></span>WIREFRAME
+      </button>
+      <button class="pause-play-btn" id="pauseBtn" aria-label="Pause Scene" title="Pause / Play (Space)">
+        Ⅱ
+      </button>
+    </div>
   </footer>
 </div>
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js';
 
-const mount = document.querySelector('#scene');
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.8));
-renderer.setSize(mount.clientWidth, mount.clientHeight);
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* =========================================================================
+   1. CORE RENDERER & SCENE SETUP
+   ========================================================================= */
+const container = document.getElementById('webglContainer');
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.25;
-mount.appendChild(renderer.domElement);
+renderer.toneMappingExposure = 1.35;
+container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('#080b12');
-scene.fog = new THREE.FogExp2('#080b12', 0.021);
-const camera = new THREE.PerspectiveCamera(52, mount.clientWidth / mount.clientHeight, 0.1, 120);
-camera.position.set(0, 3.4, 8.6);
-camera.lookAt(0, 1.15, -15);
-scene.add(new THREE.HemisphereLight(0x637487, 0x111019, 0.78));
-const moon = new THREE.DirectionalLight(0x8dc7ff, 1.2); moon.position.set(-4, 9, 7); scene.add(moon);
+scene.background = new THREE.Color('#030508');
+scene.fog = new THREE.FogExp2('#030508', 0.015);
 
-const roadMat = new THREE.MeshStandardMaterial({ color: 0x11151d, roughness: 0.88, metalness: 0.12 });
-const road = new THREE.Mesh(new THREE.PlaneGeometry(13, 120), roadMat); road.rotation.x = -Math.PI/2; road.position.set(0, 0, -42); scene.add(road);
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(240, 240), new THREE.MeshStandardMaterial({ color: 0x080b10, roughness: 1 })); ground.rotation.x = -Math.PI/2; ground.position.y = -0.025; ground.position.z = -45; scene.add(ground);
+// Camera placed behind car looking down the highway towards negative Z
+const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 260);
+camera.position.set(0, 2.4, 6.2);
+camera.lookAt(0, 0.95, -15);
 
-// An actual curved hood surface gives the two shading models a meaningful surface to disagree on.
-const hoodGeo = new THREE.BufferGeometry();
-const rows = 24, cols = 32, positions = [], indices = [];
-for (let j=0;j<=rows;j++) { const v=j/rows; const z=1.35-v*3.25; for(let i=0;i<=cols;i++){ const u=i/cols*2-1; const x=u*(1.16-0.2*v); const y=0.63+0.2*Math.cos(u*Math.PI/2)+0.15*Math.sin(v*Math.PI); positions.push(x,y,z); if(j<rows&&i<cols){const a=j*(cols+1)+i,b=a+cols+1;indices.push(a,b,a+1,b,b+1,a+1);} } }
-hoodGeo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3)); hoodGeo.setIndex(indices); hoodGeo.computeVertexNormals();
-const hoodMat = new THREE.ShaderMaterial({
-  uniforms:{uTime:{value:0},uEra:{value:1},uThermal:{value:0},uViewport:{value:new THREE.Vector2(mount.clientWidth,mount.clientHeight)},uDpr:{value:renderer.getPixelRatio()}},
-  vertexShader:`varying vec3 vWorld; varying vec3 vNormal; varying vec3 vGouraud; varying vec3 vView; varying vec3 vLocal; uniform float uTime; uniform float uEra;
-  vec3 lightPos(float i){ float z=-mod(uTime*7.2+i*5.7,61.0)+4.0; float side=(mod(i,2.0)<1.0)?-1.0:1.0; return vec3(side*3.0,4.35,z); }
-  vec3 shade(vec3 p, vec3 n, vec3 viewDir){ vec3 base=vec3(0.025,0.19,0.24); vec3 c=base*0.42+vec3(0.025,0.065,0.08); for(float i=0.0;i<10.0;i++){vec3 lp=lightPos(i); vec3 delta=lp-p; float d=length(delta); vec3 l=normalize(delta); float atten=1.0/(1.0+0.13*d+0.018*d*d); float diff=max(dot(n,l),0.0); vec3 h=normalize(l+viewDir); float spec=pow(max(dot(n,h),0.0),uEra<0.5?22.0:82.0); vec3 tint=mod(i,2.0)<1.0?vec3(0.15,0.88,1.0):vec3(1.0,0.18,0.53); c+=tint*(diff*0.075+spec*1.5)*atten;} return c; }
-  void main(){ vec4 world=modelMatrix*vec4(position,1.0); vWorld=world.xyz; vLocal=position; vNormal=normalize(mat3(modelMatrix)*normal); vView=normalize(cameraPosition-world.xyz); vGouraud=shade(vWorld,normalize(vNormal),vView); gl_Position=projectionMatrix*viewMatrix*world; }`,
-  fragmentShader:`varying vec3 vWorld; varying vec3 vNormal; varying vec3 vGouraud; varying vec3 vView; varying vec3 vLocal; uniform float uTime; uniform float uEra; uniform float uThermal; uniform vec2 uViewport; uniform float uDpr;
-  vec3 lightPos(float i){ float z=-mod(uTime*7.2+i*5.7,61.0)+4.0; float side=(mod(i,2.0)<1.0)?-1.0:1.0; return vec3(side*3.0,4.35,z); }
-  vec3 phong(vec3 p,vec3 n,vec3 viewDir){vec3 base=vec3(0.025,0.19,0.24);vec3 c=base*0.42+vec3(0.025,0.065,0.08);for(float i=0.0;i<10.0;i++){vec3 delta=lightPos(i)-p;float d=length(delta);vec3 l=normalize(delta);float atten=1.0/(1.0+0.13*d+0.018*d*d);float diff=max(dot(n,l),0.0);vec3 h=normalize(l+viewDir);float spec=pow(max(dot(n,h),0.0),82.0);vec3 tint=mod(i,2.0)<1.0?vec3(0.15,0.88,1.0):vec3(1.0,0.18,0.53);c+=tint*(diff*0.075+spec*1.5)*atten;}return c;}
-  void main(){vec3 n=normalize(vNormal);vec3 viewDir=normalize(vView);vec3 c=mix(vGouraud,phong(vWorld,n,viewDir),uEra); if(uThermal>0.5){c=mix(vec3(0.17,1.0,0.3),vec3(1.0,0.12,0.12),uEra);float edge=1.0-smoothstep(0.67,0.69,abs(vLocal.x));c=mix(c,vec3(0.03,0.16,0.04),edge*0.45);}else{float fres=pow(1.0-max(dot(n,viewDir),0.0),3.0);c+=vec3(0.08,0.48,0.58)*fres*0.65;c+=vec3(0.12,0.85,1.0)*pow(max(dot(n,normalize(vec3(-0.4,0.8,0.5))),0.0),36.0)*0.26;} gl_FragColor=vec4(c,1.0);}`,
-  side:THREE.DoubleSide
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minPolarAngle = 0.15;
+controls.maxPolarAngle = Math.PI / 2 - 0.04;
+controls.minDistance = 3.0;
+controls.maxDistance = 16.0;
+controls.target.set(0, 0.75, 0);
+controls.enabled = false;
+
+// Ambient and Moonlight illumination
+const hemiLight = new THREE.HemisphereLight(0x4a5d73, 0x090d14, 0.9);
+scene.add(hemiLight);
+
+const moonLight = new THREE.DirectionalLight(0x8bc0f8, 1.4);
+moonLight.position.set(-6, 15, 10);
+scene.add(moonLight);
+
+/* =========================================================================
+   2. PROCEDURAL ASPHALT & WET HIGHWAY (3 LANES, CAT-EYE REFLECTORS)
+   ========================================================================= */
+function createAsphaltTexture() {
+  const size = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#0f131a';
+  ctx.fillRect(0, 0, size, size);
+
+  const imgData = ctx.getImageData(0, 0, size, size);
+  const data = imgData.data;
+  for (let i = 0; i < size * size * 4; i += 4) {
+    const grain = (Math.random() - 0.5) * 18;
+    const val = Math.max(10, Math.min(38, 20 + grain));
+    data[i] = val;
+    data[i + 1] = val + 2;
+    data[i + 2] = val + 5;
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(4, 28);
+  return tex;
+}
+
+const roadTex = createAsphaltTexture();
+const roadGeo = new THREE.PlaneGeometry(16, 180);
+const roadMat = new THREE.MeshStandardMaterial({
+  map: roadTex,
+  roughness: 0.12, // slick wet asphalt
+  metalness: 0.45,
+  color: 0x141822
 });
-const car=new THREE.Group(); const hood=new THREE.Mesh(hoodGeo,hoodMat);car.add(hood);
-const cabin=new THREE.Mesh(new THREE.BoxGeometry(1.54,0.68,1.55),new THREE.MeshPhysicalMaterial({color:0x101b25,metalness:.75,roughness:.2,clearcoat:1,clearcoatRoughness:.08}));cabin.position.set(0,1.02,1.35);cabin.scale.set(.86,1,.9);car.add(cabin);
-const roof=new THREE.Mesh(new THREE.BoxGeometry(1.2,.11,.85),new THREE.MeshStandardMaterial({color:0x17232d,metalness:.8,roughness:.24}));roof.position.set(0,1.38,1.22);car.add(roof);
-const bumper=new THREE.Mesh(new THREE.BoxGeometry(2.18,.19,.28),new THREE.MeshStandardMaterial({color:0x10151c,metalness:.7,roughness:.32}));bumper.position.set(0,.52,-1.8);car.add(bumper);
-for(const x of [-.78,.78]){const lamp=new THREE.Mesh(new THREE.BoxGeometry(.4,.12,.04),new THREE.MeshBasicMaterial({color:0x64f3ff}));lamp.position.set(x,.69,-1.81);car.add(lamp);const glow=new THREE.PointLight(0x27dfff,1.8,6);glow.position.set(x,.8,-2.1);car.add(glow);}
-car.position.set(0,0,0);scene.add(car);
-const thermalShells=[cabin,roof,bumper];
-const shellOriginals=thermalShells.map(mesh=>({color:mesh.material.color.clone(),emissive:mesh.material.emissive?.clone()}));
+const roadMesh = new THREE.Mesh(roadGeo, roadMat);
+roadMesh.rotation.x = -Math.PI / 2;
+roadMesh.position.set(0, 0, -40);
+scene.add(roadMesh);
 
-const markers=[];const markerMat=new THREE.MeshBasicMaterial({color:0x73818d,transparent:true,opacity:.44});
-for(let i=0;i<20;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(.08,.012,2.3),markerMat);m.position.set(0,.012,7-i*6);scene.add(m);markers.push(m);}
-const edges=[];for(const x of [-5.8,5.8]){const line=new THREE.Mesh(new THREE.BoxGeometry(.045,.018,120),new THREE.MeshBasicMaterial({color:x<0?0xff448b:0x35ddeb,transparent:true,opacity:.7}));line.position.set(x,.022,-42);scene.add(line);edges.push(line);}
+// Ground plane
+const groundGeo = new THREE.PlaneGeometry(300, 300);
+const groundMat = new THREE.MeshBasicMaterial({ color: 0x030508 });
+const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+groundMesh.rotation.x = -Math.PI / 2;
+groundMesh.position.set(0, -0.02, -40);
+scene.add(groundMesh);
 
-const gantries=[];const poleMat=new THREE.MeshStandardMaterial({color:0x252c38,metalness:.8,roughness:.35});
-for(let i=0;i<12;i++){const g=new THREE.Group();g.position.z=8-i*8.2;const z=0;const left=new THREE.Mesh(new THREE.CylinderGeometry(.045,.07,4.35,8),poleMat);left.position.set(-3.35,2.175,z);g.add(left);const right=left.clone();right.position.x=3.35;g.add(right);const bar=new THREE.Mesh(new THREE.BoxGeometry(6.8,.09,.13),poleMat);bar.position.set(0,4.35,z);g.add(bar);for(const x of [-2.25,0,2.25]){const casing=new THREE.Mesh(new THREE.BoxGeometry(.92,.1,.2),new THREE.MeshStandardMaterial({color:0x111820,metalness:.5,roughness:.35}));casing.position.set(x,4.25,z);g.add(casing);const lamp=new THREE.Mesh(new THREE.BoxGeometry(.7,.045,.08),new THREE.MeshBasicMaterial({color:x===0?0xff53b5:0x50eafa}));lamp.position.set(x,4.18,z);g.add(lamp);const light=new THREE.PointLight(x===0?0xff3ea7:0x45dff8,12,17,2);light.position.set(x,3.95,z);g.add(light);}gantries.push(g);scene.add(g);}
+// Road Markings (3 lanes)
+const markers = [];
+const markerMat = new THREE.MeshBasicMaterial({ color: 0xd8e4f0, transparent: true, opacity: 0.85 });
+const yellowLineMat = new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.9 });
+const cyanLineMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.85 });
 
-const buildings=[];for(let side of [-1,1])for(let i=0;i<18;i++){const h=2.5+Math.random()*7,w=1.2+Math.random()*2.6,d=2+Math.random()*3;const geo=new THREE.BoxGeometry(w,h,d);const mat=new THREE.MeshStandardMaterial({color:new THREE.Color().setHSL(.58+Math.random()*.12,.18,.09+Math.random()*.09),metalness:.35,roughness:.78});const b=new THREE.Mesh(geo,mat);b.position.set(side*(7.5+Math.random()*7),h/2-0.02,-i*7.4-4);scene.add(b);buildings.push(b);for(let win=0;win<4;win++){const pane=new THREE.Mesh(new THREE.PlaneGeometry(.14,.22),new THREE.MeshBasicMaterial({color:Math.random()>.5?0x29afbd:0xff397e,transparent:true,opacity:.5+Math.random()*.4}));pane.position.set(b.position.x-side*(w/2+.006),.45+Math.random()*(h-.8),b.position.z+(Math.random()-.5)*d);pane.rotation.y=side<0?0:Math.PI;scene.add(pane);}}
+for (let i = 0; i < 24; i++) {
+  for (const x of [-2.6, 2.6]) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.015, 3.4), markerMat);
+    m.position.set(x, 0.015, 15 - i * 8);
+    scene.add(m);
+    markers.push(m);
+  }
+  const studL = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.03, 0.16), new THREE.MeshBasicMaterial({ color: 0xffaa00 }));
+  studL.position.set(-5.3, 0.02, 15 - i * 8);
+  scene.add(studL);
+  markers.push(studL);
 
-const eraSlider=document.querySelector('#eraSlider'), thermalBtn=document.querySelector('#thermalBtn'), pauseBtn=document.querySelector('#pauseBtn');let thermal=false, paused=false, elapsed=0;const clock=new THREE.Clock();const ui={title:document.querySelector('#eraTitle'),desc:document.querySelector('#eraDesc'),pass:document.querySelector('#passLabel'),chip:document.querySelector('#modeChip'),hint:document.querySelector('#sliderHint'),speed:document.querySelector('#speed'),legend:document.querySelector('#thermalLegend'),thermalReadout:document.querySelector('#thermalReadout'),intro:document.querySelector('#intro')};
-function applyThermalShells(){const mix=Number(eraSlider.value)/100;const tint=new THREE.Color().lerpColors(new THREE.Color(0x38f06f),new THREE.Color(0xff3434),mix);thermalShells.forEach((mesh,i)=>{if(thermal){mesh.material.color.copy(tint);if(mesh.material.emissive)mesh.material.emissive.copy(tint).multiplyScalar(.32);}else{mesh.material.color.copy(shellOriginals[i].color);if(mesh.material.emissive&&shellOriginals[i].emissive)mesh.material.emissive.copy(shellOriginals[i].emissive);}});}
-function setEra(){const val=Number(eraSlider.value)/100;hoodMat.uniforms.uEra.value=val;if(val<.5){ui.title.innerHTML='<em>1996</em> &nbsp;Vertex Gouraud';ui.desc.textContent='Highlights are solved at each vertex, then stretched across the hood.';ui.pass.textContent='VERTEX GOURAUD';ui.chip.textContent='1996 · VERTEX-LIT';ui.chip.style.color='#ff4ba8';ui.chip.style.borderColor='#ff4ba855';ui.hint.textContent='POLYGON LIGHTING';ui.hint.style.color='#ff4ba8';}else{ui.title.innerHTML='<em>2006</em> &nbsp;Pixel Phong';ui.desc.textContent='Per-fragment highlights hold their shape across every curve.';ui.pass.textContent='PIXEL PHONG';ui.chip.textContent='2006 · PER-PIXEL';ui.chip.style.color='#57e7f2';ui.chip.style.borderColor='#57e7f255';ui.hint.textContent=val>.98?'SHIFT TO COMPARE':'SMOOTH SPECULAR';ui.hint.style.color='#57e7f2';}ui.thermalReadout.innerHTML=val<.5?'<span class="swatch"></span>VERTEX LIT · LOWER SHADING COST':'<span class="swatch hot"></span>PIXEL LIT · HIGHER SHADING COST';applyThermalShells();}
-eraSlider.addEventListener('input',setEra);setEra();
-thermalBtn.addEventListener('click',()=>{thermal=!thermal;thermalBtn.setAttribute('aria-pressed',String(thermal));ui.legend.classList.toggle('show',thermal);hoodMat.uniforms.uThermal.value=thermal?1:0;applyThermalShells();});
-pauseBtn.addEventListener('click',()=>{paused=!paused;pauseBtn.textContent=paused?'▶':'Ⅱ';pauseBtn.setAttribute('aria-label',paused?'Resume scene':'Pause scene');clock.getDelta();});
-window.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();pauseBtn.click();}if(e.key==='ArrowLeft'||e.key==='ArrowRight'){eraSlider.value=String(Math.max(0,Math.min(100,Number(eraSlider.value)+(e.key==='ArrowRight'?5:-5))));setEra();}});
-const resize=new ResizeObserver(()=>{const w=mount.clientWidth,h=mount.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();hoodMat.uniforms.uViewport.value.set(w,h);hoodMat.uniforms.uDpr.value=renderer.getPixelRatio();});resize.observe(mount);
-function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);if(!paused)elapsed+=dt;hoodMat.uniforms.uTime.value=elapsed;const speed=paused?0:126+Math.sin(elapsed*.8)*4;ui.speed.textContent=Math.round(speed);const flow=paused?0:dt*(speed/12);for(const m of markers){m.position.z+=flow;if(m.position.z>9)m.position.z-=120;}for(const g of gantries){g.position.z+=flow;if(g.position.z>10)g.position.z-=12*8.2;}for(const b of buildings){b.position.z+=flow*.72;if(b.position.z>10)b.position.z-=18*7.4;}if(elapsed>3)ui.intro.classList.add('hide');renderer.render(scene,camera);}
+  const studR = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.03, 0.16), new THREE.MeshBasicMaterial({ color: 0x00f0ff }));
+  studR.position.set(5.3, 0.02, 15 - i * 8);
+  scene.add(studR);
+  markers.push(studR);
+}
+
+for (const x of [-5.3, 5.3]) {
+  const line = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.018, 180), x < 0 ? yellowLineMat : cyanLineMat);
+  line.position.set(x, 0.012, -40);
+  scene.add(line);
+}
+
+// Guardrails
+const railMat = new THREE.MeshStandardMaterial({ color: 0x3d4654, metalness: 0.85, roughness: 0.35 });
+for (const x of [-6.2, 6.2]) {
+  const rail = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.35, 180), railMat);
+  rail.position.set(x, 0.45, -40);
+  scene.add(rail);
+
+  for (let z = -120; z <= 24; z += 5) {
+    const post = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.65, 0.12), railMat);
+    post.position.set(x, 0.25, z);
+    scene.add(post);
+
+    const ref = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.1, 0.06), new THREE.MeshBasicMaterial({ color: x < 0 ? 0xff3b3b : 0x00ff88 }));
+    ref.position.set(x + (x < 0 ? 0.07 : -0.07), 0.52, z);
+    scene.add(ref);
+  }
+}
+
+/* =========================================================================
+   3. THE CORE REAL-TIME SHADING LAB SHADER MATERIAL
+   ========================================================================= */
+const carShaderUniforms = {
+  uTime: { value: 0 },
+  uEra: { value: 1.0 }, // 0.0 = Gouraud, 0.5 = Phong, 1.0 = Next-Gen PBR
+  uThermal: { value: 0.0 },
+  uBaseColor: { value: new THREE.Color('#080b10') }
+};
+
+const carCustomShader = new THREE.ShaderMaterial({
+  uniforms: carShaderUniforms,
+  vertexShader: `
+    varying vec3 vWorldPos;
+    varying vec3 vNormal;
+    varying vec3 vViewDir;
+    varying vec3 vLocalPos;
+    varying vec3 vGouraudColor;
+
+    uniform float uTime;
+    uniform float uEra;
+    uniform vec3 uBaseColor;
+
+    // Overhead street lights passing along negative Z
+    vec3 getGantryLight(float i) {
+      float z = -mod(uTime * 8.5 + i * 9.5, 90.0) + 12.0;
+      float side = (mod(i, 2.0) < 1.0) ? -3.4 : 3.4;
+      return vec3(side, 4.8, z);
+    }
+
+    // 1996 VERTEX GOURAUD: Lighting evaluated at mesh vertices
+    vec3 computeGouraud(vec3 p, vec3 n, vec3 vDir) {
+      vec3 ambient = uBaseColor * 0.4 + vec3(0.03, 0.05, 0.08);
+      vec3 col = ambient;
+
+      for (float i = 0.0; i < 8.0; i++) {
+        vec3 lPos = getGantryLight(i);
+        vec3 delta = lPos - p;
+        float dist = length(delta);
+        vec3 L = normalize(delta);
+        float atten = 1.0 / (1.0 + 0.12 * dist + 0.022 * dist * dist);
+
+        float NdotL = max(dot(n, L), 0.0);
+        vec3 H = normalize(L + vDir);
+        float NdotH = max(dot(n, H), 0.0);
+        float spec = pow(NdotH, 22.0);
+
+        vec3 tint = mod(i, 2.0) < 1.0 ? vec3(0.0, 0.92, 1.0) : vec3(1.0, 0.16, 0.52);
+        col += tint * (NdotL * 0.22 + spec * 1.5) * atten;
+      }
+      return col;
+    }
+
+    void main() {
+      vec4 world = modelMatrix * vec4(position, 1.0);
+      vWorldPos = world.xyz;
+      vLocalPos = position;
+      vNormal = normalize(mat3(modelMatrix) * normal);
+      vViewDir = normalize(cameraPosition - world.xyz);
+
+      vGouraudColor = computeGouraud(vWorldPos, vNormal, vViewDir);
+      gl_Position = projectionMatrix * viewMatrix * world;
+    }
+  `,
+  fragmentShader: `
+    varying vec3 vWorldPos;
+    varying vec3 vNormal;
+    varying vec3 vViewDir;
+    varying vec3 vLocalPos;
+    varying vec3 vGouraudColor;
+
+    uniform float uTime;
+    uniform float uEra;
+    uniform float uThermal;
+    uniform vec3 uBaseColor;
+
+    #define PI 3.14159265359
+
+    vec3 getGantryLight(float i) {
+      float z = -mod(uTime * 8.5 + i * 9.5, 90.0) + 12.0;
+      float side = (mod(i, 2.0) < 1.0) ? -3.4 : 3.4;
+      return vec3(side, 4.8, z);
+    }
+
+    // 2006 PER-PIXEL BLINN-PHONG
+    vec3 computePhong(vec3 p, vec3 n, vec3 vDir) {
+      vec3 ambient = uBaseColor * 0.4 + vec3(0.03, 0.05, 0.08);
+      vec3 col = ambient;
+
+      for (float i = 0.0; i < 8.0; i++) {
+        vec3 lPos = getGantryLight(i);
+        vec3 delta = lPos - p;
+        float dist = length(delta);
+        vec3 L = normalize(delta);
+        float atten = 1.0 / (1.0 + 0.12 * dist + 0.022 * dist * dist);
+
+        float NdotL = max(dot(n, L), 0.0);
+        vec3 H = normalize(L + vDir);
+        float NdotH = max(dot(n, H), 0.0);
+        float spec = pow(NdotH, 68.0);
+
+        vec3 tint = mod(i, 2.0) < 1.0 ? vec3(0.0, 0.92, 1.0) : vec3(1.0, 0.16, 0.52);
+        col += tint * (NdotL * 0.22 + spec * 2.2) * atten;
+      }
+      return col;
+    }
+
+    // 2026 NEXT-GEN PBR (GGX Microfacet + Dual-Lobe Clearcoat Lacquer)
+    float distributionGGX(vec3 N, vec3 H, float roughness) {
+      float a = roughness * roughness;
+      float a2 = a * a;
+      float NdotH = max(dot(N, H), 0.0);
+      float NdotH2 = NdotH * NdotH;
+      float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+      return a2 / (PI * denom * denom);
+    }
+
+    float geometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
+      float r = roughness + 1.0;
+      float k = (r * r) / 8.0;
+      float NdotV = max(dot(N, V), 0.0);
+      float NdotL = max(dot(N, L), 0.0);
+      float gV = NdotV / (NdotV * (1.0 - k) + k);
+      float gL = NdotL / (NdotL * (1.0 - k) + k);
+      return gV * gL;
+    }
+
+    vec3 fresnelSchlick(float cosTheta, vec3 F0) {
+      return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+    }
+
+    vec3 computePBR(vec3 p, vec3 n, vec3 vDir) {
+      vec3 F0 = mix(vec3(0.05), uBaseColor, 0.85);
+      vec3 Lo = vec3(0.0);
+
+      for (float i = 0.0; i < 8.0; i++) {
+        vec3 lPos = getGantryLight(i);
+        vec3 delta = lPos - p;
+        float dist = length(delta);
+        vec3 L = normalize(delta);
+        vec3 H = normalize(vDir + L);
+        float atten = 1.0 / (1.0 + 0.10 * dist + 0.018 * dist * dist);
+        vec3 radiance = (mod(i, 2.0) < 1.0 ? vec3(0.0, 0.94, 1.0) : vec3(1.0, 0.16, 0.52)) * 6.0 * atten;
+
+        float NDF = distributionGGX(n, H, 0.16);
+        float G = geometrySmith(n, vDir, L, 0.16);
+        vec3 F = fresnelSchlick(max(dot(H, vDir), 0.0), F0);
+
+        vec3 specular = (NDF * G * F) / (4.0 * max(dot(n, vDir), 0.0) * max(dot(n, L), 0.0) + 0.0001);
+        vec3 kD = (vec3(1.0) - F) * 0.15;
+        float NdotL = max(dot(n, L), 0.0);
+
+        Lo += (kD * uBaseColor / PI + specular) * radiance * NdotL;
+
+        // SECONDARY CLEARCOAT LACQUER LOBE
+        float ccNDF = distributionGGX(n, H, 0.035);
+        float ccG = geometrySmith(n, vDir, L, 0.035);
+        vec3 ccF = fresnelSchlick(max(dot(H, vDir), 0.0), vec3(0.04));
+        vec3 ccSpec = (ccNDF * ccG * ccF) / (4.0 * max(dot(n, vDir), 0.0) * max(dot(n, L), 0.0) + 0.0001);
+        Lo += ccSpec * radiance * NdotL * 0.55;
+      }
+
+      // Procedural Night City Skyline Reflection
+      vec3 R = reflect(-vDir, n);
+      float skyGrad = clamp(R.y * 0.5 + 0.5, 0.0, 1.0);
+      vec3 skyReflection = mix(vec3(0.05, 0.08, 0.14), vec3(0.01, 0.02, 0.03), skyGrad);
+      float horizonNeon = pow(1.0 - abs(R.y), 10.0) * (sin(R.x * 6.0) * 0.5 + 0.5);
+      skyReflection += mix(vec3(0.0, 0.88, 1.0), vec3(1.0, 0.15, 0.55), sin(R.z * 4.0) * 0.5 + 0.5) * horizonNeon * 1.6;
+
+      vec3 envF = fresnelSchlick(max(dot(n, vDir), 0.0), F0);
+      vec3 ambient = (skyReflection * 0.4 * uBaseColor) + (skyReflection * envF * 1.3);
+
+      return Lo + ambient;
+    }
+
+    void main() {
+      vec3 n = normalize(vNormal);
+      vec3 vDir = normalize(vViewDir);
+
+      vec3 gouraudRes = vGouraudColor;
+      vec3 phongRes = computePhong(vWorldPos, n, vDir);
+      vec3 pbrRes = computePBR(vWorldPos, n, vDir);
+
+      vec3 finalColor;
+      if (uEra < 0.5) {
+        float t = uEra / 0.5;
+        finalColor = mix(gouraudRes, phongRes, t);
+      } else {
+        float t = (uEra - 0.5) / 0.5;
+        finalColor = mix(phongRes, pbrRes, t);
+      }
+
+      // THERMAL GPU HEATMAP
+      if (uThermal > 0.5) {
+        vec3 greenHeat = vec3(0.0, 1.0, 0.4);
+        vec3 amberHeat = vec3(1.0, 0.7, 0.0);
+        vec3 redHeat = vec3(1.0, 0.12, 0.35);
+
+        vec3 heatColor = (uEra < 0.5) ? mix(greenHeat, amberHeat, uEra / 0.5) : mix(amberHeat, redHeat, (uEra - 0.5) / 0.5);
+        float edge = 1.0 - smoothstep(0.65, 0.70, abs(vLocalPos.x));
+        heatColor = mix(heatColor, vec3(0.04, 0.18, 0.07), edge * 0.35);
+        finalColor = heatColor;
+      }
+
+      gl_FragColor = vec4(finalColor, 1.0);
+    }
+  `,
+  side: THREE.DoubleSide
+});
+
+/* =========================================================================
+   4. CONTINUOUS PARAMETRIC SUPERCAR MONOCOQUE (BEAUTIFUL FROM ALL ANGLES)
+   ========================================================================= */
+const car = new THREE.Group();
+const carbonMat = new THREE.MeshStandardMaterial({ color: 0x07090d, metalness: 0.9, roughness: 0.25 });
+
+// Generate a continuous, sculpted aerodynamic supercar monocoque body
+// Spanning from front nose (z = -2.25) to rear tail (z = +2.15)
+const slicesZ = 46;
+const radialU = 18; // Profile vertices around the cross section (left sill -> roof -> right sill)
+const bodyPositions = [];
+const bodyIndices = [];
+
+function getCarCrossSection(uNorm, z) {
+  // uNorm: 0 (left floor) -> 0.1 (left sill) -> 0.25 (left beltline) -> 0.5 (roof/hood center) -> 0.75 (right beltline) -> 0.9 (right sill) -> 1.0 (right floor)
+  let wBase = 0.96;
+  if (z < -1.8) {
+    const t = (z - (-2.25)) / 0.45;
+    wBase = 0.76 + 0.20 * Math.max(0, Math.min(1, t));
+  } else if (z > 1.8) {
+    const t = (z - 1.8) / 0.35;
+    wBase = 0.96 - 0.08 * Math.max(0, Math.min(1, t));
+  } else {
+    // Muscular fender arches over wheels
+    const archF = Math.exp(-Math.pow((z - (-1.25)) / 0.42, 2.0)) * 0.07;
+    const archR = Math.exp(-Math.pow((z - 1.25) / 0.46, 2.0)) * 0.09;
+    wBase = 0.96 + archF + archR;
+  }
+
+  // Vertical heights profile along Z
+  let yFloor = 0.32;
+  let ySill = 0.38;
+  let yBelt = 0.65;
+  let yCenter = 0.70;
+  let wCab = 0.0;
+
+  if (z < -1.8) {
+    // Nose wedge
+    const t = (z - (-2.25)) / 0.45;
+    ySill = 0.34;
+    yBelt = 0.45 + 0.18 * t;
+    yCenter = yBelt + 0.04;
+  } else if (z < -0.35) {
+    // Sloping hood
+    const t = (z - (-1.8)) / 1.45;
+    ySill = 0.36;
+    yBelt = 0.63 + 0.18 * t;
+    yCenter = yBelt + 0.05 - 0.03 * Math.sin(t * Math.PI); // subtle center scoop
+  } else if (z < 1.05) {
+    // Cockpit cabin greenhouse
+    const t = (z - (-0.35)) / 1.4;
+    ySill = 0.36;
+    yBelt = 0.81 - 0.06 * t;
+    yCenter = 1.35 - 0.14 * Math.pow(t - 0.35, 2.0); // curved roof
+    wCab = 0.68 - 0.12 * t;
+  } else {
+    // Rear fastback deck
+    const t = (z - 1.05) / 1.1;
+    ySill = 0.38 + 0.08 * t; // diffuser upsweep
+    yBelt = 0.75 - 0.04 * t;
+    yCenter = 0.84 - 0.06 * t + 0.08 * Math.pow(t, 3.0); // ducktail spoiler
+    wCab = 0.0;
+  }
+
+  // Map radial uNorm (0 to 1) to (x, y)
+  let x = 0, y = 0;
+  if (uNorm <= 0.5) {
+    // Left side: 0.0 = floor center, 0.12 = left sill, 0.28 = left belt, 0.5 = center roof/hood
+    const p = uNorm / 0.5;
+    if (p < 0.25) {
+      // Underbody floor
+      const st = p / 0.25;
+      x = -wBase * st;
+      y = yFloor;
+    } else if (p < 0.55) {
+      // Lower side rocker panel to beltline
+      const st = (p - 0.25) / 0.3;
+      x = -wBase;
+      y = yFloor + (yBelt - yFloor) * st;
+    } else {
+      // Beltline to center roof/hood
+      const st = (p - 0.55) / 0.45;
+      if (wCab > 0.05) {
+        x = -wBase + (wBase - wCab * (1.0 - st)) * st;
+        y = yBelt + (yCenter - yBelt) * Math.sin(st * Math.PI * 0.5);
+      } else {
+        x = -wBase * (1.0 - st);
+        y = yBelt + (yCenter - yBelt) * Math.sin(st * Math.PI * 0.5);
+      }
+    }
+  } else {
+    // Symmetrical right side
+    const p = (uNorm - 0.5) / 0.5;
+    if (p < 0.45) {
+      const st = p / 0.45;
+      if (wCab > 0.05) {
+        x = (wCab * st) + (wBase - wCab) * Math.sin(st * Math.PI * 0.5);
+        y = yCenter - (yCenter - yBelt) * (1.0 - Math.cos(st * Math.PI * 0.5));
+      } else {
+        x = wBase * st;
+        y = yCenter - (yCenter - yBelt) * (1.0 - Math.cos(st * Math.PI * 0.5));
+      }
+    } else if (p < 0.75) {
+      const st = (p - 0.45) / 0.3;
+      x = wBase;
+      y = yBelt - (yBelt - yFloor) * st;
+    } else {
+      const st = (p - 0.75) / 0.25;
+      x = wBase * (1.0 - st);
+      y = yFloor;
+    }
+  }
+
+  return { x, y };
+}
+
+for (let j = 0; j <= slicesZ; j++) {
+  const v = j / slicesZ;
+  const z = -2.25 + v * 4.4; // Front (-2.25) to Rear (+2.15)
+
+  for (let i = 0; i <= radialU; i++) {
+    const uNorm = i / radialU;
+    const pt = getCarCrossSection(uNorm, z);
+    bodyPositions.push(pt.x, pt.y, z);
+
+    if (j < slicesZ && i < radialU) {
+      const a = j * (radialU + 1) + i;
+      const b = a + radialU + 1;
+      bodyIndices.push(a, b, a + 1);
+      bodyIndices.push(b, b + 1, a + 1);
+    }
+  }
+}
+
+const monocoqueGeo = new THREE.BufferGeometry();
+monocoqueGeo.setAttribute('position', new THREE.Float32BufferAttribute(bodyPositions, 3));
+monocoqueGeo.setIndex(bodyIndices);
+monocoqueGeo.computeVertexNormals();
+
+const bodyMesh = new THREE.Mesh(monocoqueGeo, carCustomShader);
+car.add(bodyMesh);
+
+// Wireframe overlay on the continuous car body
+const wireframeMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.0 });
+const hoodWireframe = new THREE.Mesh(monocoqueGeo, wireframeMat);
+car.add(hoodWireframe);
+
+// Cockpit Dark Tinted Glass Windshield & Side Windows
+const glassMat = new THREE.MeshPhysicalMaterial({
+  color: 0x040810,
+  metalness: 0.1,
+  roughness: 0.03,
+  transmission: 0.82,
+  thickness: 0.7,
+  transparent: true,
+  opacity: 0.92
+});
+const cockpitGlass = new THREE.Mesh(new THREE.BoxGeometry(1.32, 0.52, 1.36), glassMat);
+cockpitGlass.position.set(0, 1.08, 0.42);
+car.add(cockpitGlass);
+
+// Front Carbon Aero Splitter
+const frontSplitter = new THREE.Mesh(new THREE.BoxGeometry(1.98, 0.06, 0.55), carbonMat);
+frontSplitter.position.set(0, 0.33, -2.15);
+car.add(frontSplitter);
+
+// Front Air Intake Grille
+const frontGrille = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.14, 0.12), new THREE.MeshStandardMaterial({ color: 0x030508, roughness: 0.9 }));
+frontGrille.position.set(0, 0.40, -2.26);
+car.add(frontGrille);
+
+// Rear Carbon Aerodynamic Diffuser
+const rearDiffuser = new THREE.Mesh(new THREE.BoxGeometry(1.86, 0.18, 0.45), carbonMat);
+rearDiffuser.position.set(0, 0.38, 2.14);
+car.add(rearDiffuser);
+
+// Active Aerodynamic Rear Wing
+const rearWing = new THREE.Mesh(new THREE.BoxGeometry(2.02, 0.04, 0.34), carbonMat);
+rearWing.position.set(0, 1.22, 1.95);
+car.add(rearWing);
+for (const x of [-0.52, 0.52]) {
+  const pylon = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.36, 0.16), carbonMat);
+  pylon.position.set(x, 1.04, 1.9);
+  pylon.rotation.x = -0.15;
+  car.add(pylon);
+}
+
+// Full-Width Cyber LED Taillight Bar
+const taillight = new THREE.Mesh(new THREE.BoxGeometry(1.82, 0.08, 0.08), new THREE.MeshBasicMaterial({ color: 0xff0828 }));
+taillight.position.set(0, 0.82, 2.14);
+car.add(taillight);
+
+const tailGlow = new THREE.PointLight(0xff0828, 4.5, 7.5);
+tailGlow.position.set(0, 0.84, 2.38);
+car.add(tailGlow);
+
+// Projector LED Headlights
+for (const x of [-0.72, 0.72]) {
+  const lamp = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.08, 0.1), new THREE.MeshBasicMaterial({ color: 0x7beeff }));
+  lamp.position.set(x, 0.56, -2.05);
+  car.add(lamp);
+
+  const spot = new THREE.SpotLight(0x8feeff, 12, 40, Math.PI / 6, 0.4, 1.2);
+  spot.position.set(x, 0.60, -2.1);
+  spot.target.position.set(x * 0.5, 0.0, -32);
+  scene.add(spot.target);
+  car.add(spot);
+
+  // Volumetric forward light shaft
+  const coneGeo = new THREE.ConeGeometry(1.6, 15, 16, 1, true);
+  const coneMat = new THREE.MeshBasicMaterial({ color: 0x33ddff, transparent: true, opacity: 0.09, side: THREE.DoubleSide, depthWrite: false });
+  const cone = new THREE.Mesh(coneGeo, coneMat);
+  cone.position.set(x, 0.58, -9.5);
+  cone.rotation.x = Math.PI / 2;
+  car.add(cone);
+}
+
+// Side Mirrors
+for (const x of [-0.94, 0.94]) {
+  const stem = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.04, 0.07), carbonMat);
+  stem.position.set(x * 0.88, 0.98, 0.1);
+  car.add(stem);
+
+  const mirror = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.11, 0.11), carCustomShader);
+  mirror.position.set(x, 1.01, 0.14);
+  car.add(mirror);
+}
+
+// 4x Realistic Wheels (Tires + Rims + Brake Discs & Calipers)
+const wheels = [];
+const wheelRadius = 0.36;
+
+function createWheel() {
+  const wg = new THREE.Group();
+
+  const tire = new THREE.Mesh(new THREE.CylinderGeometry(wheelRadius, wheelRadius, 0.28, 22), new THREE.MeshStandardMaterial({ color: 0x12161d, roughness: 0.85, metalness: 0.1 }));
+  tire.rotation.z = Math.PI / 2;
+  wg.add(tire);
+
+  const rimMat = new THREE.MeshStandardMaterial({ color: 0x38414e, metalness: 0.92, roughness: 0.2 });
+  const rim = new THREE.Mesh(new THREE.CylinderGeometry(wheelRadius * 0.78, wheelRadius * 0.78, 0.29, 18), rimMat);
+  rim.rotation.z = Math.PI / 2;
+  wg.add(rim);
+
+  for (let s = 0; s < 5; s++) {
+    const spoke = new THREE.Mesh(new THREE.BoxGeometry(0.04, wheelRadius * 0.74, 0.29), rimMat);
+    spoke.rotation.x = (s / 5) * Math.PI * 2;
+    wg.add(spoke);
+  }
+
+  const rotor = new THREE.Mesh(new THREE.CylinderGeometry(wheelRadius * 0.6, wheelRadius * 0.6, 0.05, 16), new THREE.MeshStandardMaterial({ color: 0x88929e, metalness: 0.9, roughness: 0.3 }));
+  rotor.rotation.z = Math.PI / 2;
+  wg.add(rotor);
+
+  const caliper = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.15, 0.1), new THREE.MeshStandardMaterial({ color: 0x00f0ff, roughness: 0.2, metalness: 0.6 }));
+  caliper.position.set(0.06, 0.13, 0);
+  wg.add(caliper);
+
+  return wg;
+}
+
+[
+  { x: -0.98, z: -1.25 },
+  { x: 0.98, z: -1.25 },
+  { x: -0.98, z: 1.25 },
+  { x: 0.98, z: 1.25 }
+].forEach(pos => {
+  const w = createWheel();
+  w.position.set(pos.x, wheelRadius, pos.z);
+  car.add(w);
+  wheels.push(w);
+});
+
+scene.add(car);
+
+/* =========================================================================
+   5. OVERHEAD HIGHWAY GANTRIES & STREET LIGHTING
+   ========================================================================= */
+const gantries = [];
+const gantryMat = new THREE.MeshStandardMaterial({ color: 0x222a36, metalness: 0.8, roughness: 0.4 });
+
+for (let g = 0; g < 8; g++) {
+  const gantryGroup = new THREE.Group();
+  gantryGroup.position.z = 18 - g * 22;
+
+  for (const x of [-6.8, 6.8]) {
+    const col = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 5.8, 10), gantryMat);
+    col.position.set(x, 2.9, 0);
+    gantryGroup.add(col);
+  }
+
+  const truss = new THREE.Mesh(new THREE.BoxGeometry(14.0, 0.28, 0.35), gantryMat);
+  truss.position.set(0, 5.6, 0);
+  gantryGroup.add(truss);
+
+  const signGeo = new THREE.PlaneGeometry(3.6, 1.2);
+  const signCanvas = document.createElement('canvas');
+  signCanvas.width = 512; signCanvas.height = 170;
+  const sCtx = signCanvas.getContext('2d');
+  sCtx.fillStyle = '#061c14';
+  sCtx.fillRect(0, 0, 512, 170);
+  sCtx.strokeStyle = '#00ff88';
+  sCtx.lineWidth = 6;
+  sCtx.strokeRect(6, 6, 500, 158);
+  sCtx.fillStyle = '#ffffff';
+  sCtx.font = 'bold 28px Space Grotesk, sans-serif';
+  sCtx.fillText('TOKYO C1 // SHADING LAB', 24, 60);
+  sCtx.fillStyle = '#00ff88';
+  sCtx.font = '20px DM Mono, monospace';
+  sCtx.fillText('PER-PIXEL PHONG vs PBR CLEARCOAT', 24, 110);
+  sCtx.fillStyle = '#ffaa00';
+  sCtx.font = '18px DM Mono, monospace';
+  sCtx.fillText('LIMIT 120 KM/H ↗', 330, 142);
+
+  const signTex = new THREE.CanvasTexture(signCanvas);
+  const signMesh = new THREE.Mesh(signGeo, new THREE.MeshBasicMaterial({ map: signTex }));
+  signMesh.position.set(-1.8, 4.7, 0.1);
+  gantryGroup.add(signMesh);
+
+  for (const x of [-3.4, 3.4]) {
+    const isCyan = (g % 2 === 0);
+    const lampColor = isCyan ? 0x00f0ff : 0xff2a85;
+
+    const bulb = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.06, 0.2), new THREE.MeshBasicMaterial({ color: lampColor }));
+    bulb.position.set(x, 5.34, 0);
+    gantryGroup.add(bulb);
+
+    const pLight = new THREE.PointLight(lampColor, 12, 20, 1.8);
+    pLight.position.set(x, 4.9, 0);
+    gantryGroup.add(pLight);
+  }
+
+  scene.add(gantryGroup);
+  gantries.push(gantryGroup);
+}
+
+/* =========================================================================
+   6. EXPANSIVE SKYLINE BUILDINGS
+   ========================================================================= */
+const buildings = [];
+const bldgColors = [0x070a10, 0x0b1019, 0x0f1522, 0x090e16];
+
+for (let side of [-1, 1]) {
+  for (let i = 0; i < 28; i++) {
+    const bGroup = new THREE.Group();
+    const w = 3.0 + Math.random() * 5.0;
+    const h = 7.0 + Math.random() * 22.0;
+    const d = 3.5 + Math.random() * 5.0;
+
+    const bMesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({
+      color: bldgColors[Math.floor(Math.random() * bldgColors.length)],
+      metalness: 0.6,
+      roughness: 0.4
+    }));
+    bMesh.position.y = h / 2 - 0.2;
+    bGroup.add(bMesh);
+
+    const winCanvas = document.createElement('canvas');
+    winCanvas.width = 64; winCanvas.height = 128;
+    const wCtx = winCanvas.getContext('2d');
+    wCtx.fillStyle = '#05070a';
+    wCtx.fillRect(0, 0, 64, 128);
+    for (let r = 0; r < 20; r++) {
+      for (let c = 0; c < 8; c++) {
+        if (Math.random() > 0.42) {
+          wCtx.fillStyle = Math.random() > 0.6 ? '#6ec0f7' : '#ffd98a';
+          wCtx.fillRect(c * 8 + 1, r * 6 + 1, 5, 4);
+        }
+      }
+    }
+    const winTex = new THREE.CanvasTexture(winCanvas);
+    winTex.wrapS = THREE.RepeatWrapping; winTex.wrapT = THREE.RepeatWrapping;
+    winTex.repeat.set(2, Math.floor(h / 3));
+
+    const winPlane = new THREE.Mesh(new THREE.PlaneGeometry(w * 0.95, h * 0.9), new THREE.MeshBasicMaterial({ map: winTex, transparent: true, opacity: 0.75 }));
+    winPlane.position.set(0, h / 2, side < 0 ? d / 2 + 0.05 : -d / 2 - 0.05);
+    if (side > 0) winPlane.rotation.y = Math.PI;
+    bGroup.add(winPlane);
+
+    if (h > 16) {
+      const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.08, 3.5, 6), gantryMat);
+      antenna.position.set(0, h + 1.75, 0);
+      bGroup.add(antenna);
+
+      const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), new THREE.MeshBasicMaterial({ color: 0xff0020 }));
+      beacon.position.set(0, h + 3.5, 0);
+      bGroup.add(beacon);
+    }
+
+    const posX = side * (10.0 + Math.random() * 12.0);
+    const posZ = 24 - i * 9.5;
+    bGroup.position.set(posX, 0, posZ);
+
+    scene.add(bGroup);
+    buildings.push(bGroup);
+  }
+}
+
+/* =========================================================================
+   7. HIGH-DENSITY ATMOSPHERIC RAIN & ROAD SPLASHES (REALISTIC WET STORM)
+   ========================================================================= */
+const rainCount = 4000;
+const rainPositions = new Float32Array(rainCount * 6);
+const rainVelocities = new Float32Array(rainCount);
+
+for (let r = 0; r < rainCount; r++) {
+  const rx = (Math.random() - 0.5) * 26;
+  const ry = Math.random() * 15;
+  const rz = (Math.random() - 0.5) * 140;
+  rainVelocities[r] = 32 + Math.random() * 18;
+
+  rainPositions[r * 6 + 0] = rx;
+  rainPositions[r * 6 + 1] = ry;
+  rainPositions[r * 6 + 2] = rz;
+
+  rainPositions[r * 6 + 3] = rx;
+  rainPositions[r * 6 + 4] = ry - 1.1; // longer visible streaks
+  rainPositions[r * 6 + 5] = rz + 1.8; // backward slant
+}
+
+const rainGeo = new THREE.BufferGeometry();
+rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3));
+const rainMat = new THREE.LineBasicMaterial({
+  color: 0xa8e8ff,
+  transparent: true,
+  opacity: 0.82,
+  blending: THREE.AdditiveBlending
+});
+const rainLines = new THREE.LineSegments(rainGeo, rainMat);
+scene.add(rainLines);
+
+// Puddle Road Splash Ripples (expanding rings on asphalt)
+const splashCount = 50;
+const splashGroup = new THREE.Group();
+const splashMeshes = [];
+const splashGeo = new THREE.RingGeometry(0.08, 0.18, 16);
+splashGeo.rotateX(-Math.PI / 2);
+const splashMat = new THREE.MeshBasicMaterial({ color: 0x99e5ff, transparent: true, opacity: 0.55, side: THREE.DoubleSide });
+
+for (let s = 0; s < splashCount; s++) {
+  const sm = new THREE.Mesh(splashGeo, splashMat);
+  sm.position.set((Math.random() - 0.5) * 14, 0.025, 10 - Math.random() * 80);
+  sm.scale.setScalar(0.2 + Math.random() * 0.8);
+  splashGroup.add(sm);
+  splashMeshes.push({ mesh: sm, life: Math.random() });
+}
+scene.add(splashGroup);
+
+// Screen Rain Droplet Canvas (animated water droplets running down camera lens)
+const dropCanvas = document.getElementById('rainDropCanvas');
+const dropCtx = dropCanvas.getContext('2d');
+let dropW = dropCanvas.width = window.innerWidth;
+let dropH = dropCanvas.height = window.innerHeight;
+
+const screenDrops = [];
+for (let d = 0; d < 65; d++) {
+  screenDrops.push({
+    x: Math.random() * dropW,
+    y: Math.random() * dropH,
+    len: 8 + Math.random() * 22,
+    speed: 3 + Math.random() * 8,
+    radius: 1.2 + Math.random() * 1.6,
+    opacity: 0.25 + Math.random() * 0.5
+  });
+}
+
+function updateScreenDrops() {
+  dropCtx.clearRect(0, 0, dropW, dropH);
+  if (!rainMode) return;
+
+  dropCtx.fillStyle = 'rgba(180, 230, 255, 0.45)';
+  dropCtx.strokeStyle = 'rgba(210, 245, 255, 0.35)';
+  dropCtx.lineWidth = 1.5;
+
+  screenDrops.forEach(d => {
+    d.y += d.speed;
+    if (d.y > dropH + 20) {
+      d.y = -20;
+      d.x = Math.random() * dropW;
+    }
+    // Draw tear drop streak
+    dropCtx.beginPath();
+    dropCtx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
+    dropCtx.fill();
+
+    dropCtx.beginPath();
+    dropCtx.moveTo(d.x, d.y);
+    dropCtx.lineTo(d.x, d.y - d.len);
+    dropCtx.stroke();
+  });
+}
+
+/* =========================================================================
+   8. PROCEDURAL WEB AUDIO SYNTHESIZER
+   ========================================================================= */
+let audioCtx = null, engineOsc = null, engineSub = null, engineFilter = null, audioMuted = true;
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  engineOsc = audioCtx.createOscillator();
+  engineOsc.type = 'sawtooth';
+  engineOsc.frequency.setValueAtTime(54, audioCtx.currentTime);
+
+  engineSub = audioCtx.createOscillator();
+  engineSub.type = 'triangle';
+  engineSub.frequency.setValueAtTime(27, audioCtx.currentTime);
+
+  engineFilter = audioCtx.createBiquadFilter();
+  engineFilter.type = 'lowpass';
+  engineFilter.frequency.setValueAtTime(140, audioCtx.currentTime);
+
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+
+  engineOsc.connect(engineFilter);
+  engineSub.connect(engineFilter);
+  engineFilter.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  engineOsc.start();
+  engineSub.start();
+}
+
+function updateAudio(rpm) {
+  if (!audioCtx || audioMuted) return;
+  const targetFreq = 42 + (rpm / 8000) * 85;
+  engineOsc.frequency.setTargetAtTime(targetFreq, audioCtx.currentTime, 0.05);
+  engineSub.frequency.setTargetAtTime(targetFreq * 0.5, audioCtx.currentTime, 0.05);
+  engineFilter.frequency.setTargetAtTime(120 + (rpm / 8000) * 350, audioCtx.currentTime, 0.05);
+}
+
+/* =========================================================================
+   9. CAMERA MODES & UI EVENT LISTENERS
+   ========================================================================= */
+const CAM_MODES = { CHASE: 'CHASE', HOOD: 'HOOD', COCKPIT: 'COCKPIT', ORBIT: 'ORBIT' };
+let currentCamMode = CAM_MODES.CHASE;
+
+function setCameraMode(mode) {
+  currentCamMode = mode;
+  document.querySelectorAll('.cam-btn-group .pill-btn').forEach(btn => btn.classList.remove('active'));
+
+  if (mode === CAM_MODES.CHASE) {
+    document.getElementById('camChase').classList.add('active');
+    controls.enabled = false;
+    camera.position.set(0, 2.4, 6.2);
+    camera.lookAt(0, 0.95, -15);
+  } else if (mode === CAM_MODES.HOOD) {
+    document.getElementById('camHood').classList.add('active');
+    controls.enabled = false;
+    camera.position.set(0, 0.95, 0.1);
+    camera.lookAt(0, 0.75, -20);
+  } else if (mode === CAM_MODES.COCKPIT) {
+    document.getElementById('camCockpit').classList.add('active');
+    controls.enabled = false;
+    camera.position.set(-0.25, 1.15, 0.65);
+    camera.lookAt(-0.1, 1.05, -20);
+  } else if (mode === CAM_MODES.ORBIT) {
+    document.getElementById('camOrbit').classList.add('active');
+    controls.enabled = true;
+    controls.target.set(0, 0.75, 0);
+  }
+}
+
+const ui = {
+  eraSlider: document.getElementById('eraSlider'),
+  eraBadge: document.getElementById('eraBadge'),
+  eraHeading: document.getElementById('eraHeading'),
+  eraSummary: document.getElementById('eraSummary'),
+  passTitle: document.getElementById('passTitleDisplay'),
+  evalChip: document.getElementById('evalTargetChip'),
+  gpuCostChip: document.getElementById('gpuCostChip'),
+  sliderValueText: document.getElementById('sliderValueText'),
+  thermalBtn: document.getElementById('thermalBtn'),
+  wireframeBtn: document.getElementById('wireframeBtn'),
+  dockRainBtn: document.getElementById('dockRainBtn'),
+  pauseBtn: document.getElementById('pauseBtn'),
+  thermalLegend: document.getElementById('thermalLegendBox'),
+  speedDisplay: document.getElementById('speedDisplay'),
+  rpmDisplay: document.getElementById('rpmDisplay'),
+  rpmBar: document.getElementById('rpmBar'),
+  fpsCount: document.getElementById('fpsCount'),
+  weatherBtn: document.getElementById('weatherBtn'),
+  audioBtn: document.getElementById('audioBtn'),
+  codeBtn: document.getElementById('codeBtn'),
+  shaderInspector: document.getElementById('shaderInspector'),
+  closeInspectorBtn: document.getElementById('closeInspectorBtn'),
+  formulaTitle: document.getElementById('formulaTitle'),
+  formulaMath: document.getElementById('formulaMath'),
+  shaderCodePreview: document.getElementById('shaderCodePreview')
+};
+
+let thermalMode = false;
+let wireframeMode = false;
+let rainMode = true; // Enabled by default
+let isPaused = false;
+
+function toggleRain(forceState) {
+  rainMode = (typeof forceState === 'boolean') ? forceState : !rainMode;
+  ui.weatherBtn.classList.toggle('active', rainMode);
+  ui.dockRainBtn.classList.toggle('rain-active', rainMode);
+  rainMat.opacity = rainMode ? 0.82 : 0.0;
+  splashGroup.visible = rainMode;
+  roadMat.roughness = rainMode ? 0.12 : 0.35;
+  roadMat.metalness = rainMode ? 0.45 : 0.25;
+}
+
+function updateEra(val) {
+  const norm = val / 100;
+  carShaderUniforms.uEra.value = norm;
+
+  document.getElementById('btnTier1996').classList.remove('active');
+  document.getElementById('btnTier2006').classList.remove('active');
+  document.getElementById('btnTier2026').classList.remove('active');
+
+  if (norm < 0.35) {
+    document.getElementById('btnTier1996').classList.add('active');
+    ui.eraBadge.textContent = '1996';
+    ui.eraHeading.textContent = 'Vertex Gouraud Shading';
+    ui.eraSummary.textContent = 'Lighting solved strictly at triangle vertices; values interpolate linearly across faces, losing high-frequency highlights.';
+    ui.passTitle.textContent = '1996 VERTEX GOURAUD';
+    ui.passTitle.style.color = '#ff2a85';
+    ui.evalChip.textContent = 'VTX STAGE · LINEAR INTERP';
+    ui.evalChip.style.color = '#ff2a85';
+    ui.evalChip.style.borderColor = 'rgba(255, 42, 133, 0.4)';
+    ui.gpuCostChip.textContent = 'ALU: ~14 FLOP/VTX';
+    ui.sliderValueText.textContent = `${val}% · 1996 GOURAUD`;
+
+    ui.formulaTitle.textContent = '1996 GOURAUD ILLUMINATION';
+    ui.formulaMath.textContent = 'I_vtx = I_a·k_a + Σ (I_d·k_d(N_v·L) + I_s·k_s(N_v·H)^n)';
+    ui.shaderCodePreview.textContent =
+`// Vertex Shader evaluation
+vec4 world = modelMatrix * vec4(position, 1.0);
+vec3 N = normalize(mat3(modelMatrix) * normal);
+vGouraudColor = ambient + diff * atten + spec * atten;
+// In fragment shader:
+gl_FragColor = vec4(vGouraudColor, 1.0);`;
+
+  } else if (norm < 0.70) {
+    document.getElementById('btnTier2006').classList.add('active');
+    ui.eraBadge.textContent = '2006';
+    ui.eraHeading.textContent = 'Per-Pixel Blinn-Phong';
+    ui.eraSummary.textContent = 'Surface normals are interpolated across fragments; specular highlights maintain consistent shape on curves.';
+    ui.passTitle.textContent = '2006 PIXEL PHONG';
+    ui.passTitle.style.color = '#00f0ff';
+    ui.evalChip.textContent = 'FRAG STAGE · BLINN-PHONG';
+    ui.evalChip.style.color = '#00f0ff';
+    ui.evalChip.style.borderColor = 'rgba(0, 240, 255, 0.4)';
+    ui.gpuCostChip.textContent = 'ALU: ~58 FLOP/PX';
+    ui.sliderValueText.textContent = `${val}% · 2006 PHONG`;
+
+    ui.formulaTitle.textContent = '2006 PER-PIXEL BLINN-PHONG';
+    ui.formulaMath.textContent = 'I_px = I_a·k_a + Σ atten·(k_d(N·L) + k_s(N·H)^shininess)';
+    ui.shaderCodePreview.textContent =
+`// Fragment Shader evaluation
+vec3 N = normalize(vNormal);
+vec3 H = normalize(L + V);
+float spec = pow(max(dot(N, H), 0.0), 68.0);
+gl_FragColor = vec4(ambient + diff + spec, 1.0);`;
+
+  } else {
+    document.getElementById('btnTier2026').classList.add('active');
+    ui.eraBadge.textContent = '2026';
+    ui.eraHeading.textContent = 'Next-Gen PBR Clearcoat';
+    ui.eraSummary.textContent = 'Microfacet Cook-Torrance GGX distribution, Fresnel-Schlick reflection, and dual-lobe clearcoat lacquer.';
+    ui.passTitle.textContent = '2026 NEXT-GEN PBR';
+    ui.passTitle.style.color = '#00ff88';
+    ui.evalChip.textContent = 'PIXEL GGX + DUAL CLEARCOAT';
+    ui.evalChip.style.color = '#00ff88';
+    ui.evalChip.style.borderColor = 'rgba(0, 255, 136, 0.4)';
+    ui.gpuCostChip.textContent = 'ALU: ~240 FLOP/PX';
+    ui.sliderValueText.textContent = `${val}% · NEXT-GEN PBR`;
+
+    ui.formulaTitle.textContent = '2026 COOK-TORRANCE GGX + CLEARCOAT';
+    ui.formulaMath.textContent = 'f_r = (D_GGX · F_Schlick · G_Smith) / (4·(N·V)(N·L)) + Clearcoat';
+    ui.shaderCodePreview.textContent =
+`// Fragment evaluation
+vec3 N = normalize(vNormal);
+vec3 H = normalize(V + L);
+float D = distributionGGX(N, H, roughness);
+float G = geometrySmith(N, V, L, roughness);
+vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);
+Lo += (kD * color / PI + (D * G * F) / denom) * radiance;`;
+  }
+}
+
+ui.eraSlider.addEventListener('input', e => updateEra(Number(e.target.value)));
+
+document.getElementById('btnTier1996').addEventListener('click', () => { ui.eraSlider.value = 0; updateEra(0); });
+document.getElementById('btnTier2006').addEventListener('click', () => { ui.eraSlider.value = 50; updateEra(50); });
+document.getElementById('btnTier2026').addEventListener('click', () => { ui.eraSlider.value = 100; updateEra(100); });
+
+ui.thermalBtn.addEventListener('click', () => {
+  thermalMode = !thermalMode;
+  ui.thermalBtn.classList.toggle('active', thermalMode);
+  ui.thermalBtn.setAttribute('aria-pressed', String(thermalMode));
+  ui.thermalLegend.classList.toggle('show', thermalMode);
+  carShaderUniforms.uThermal.value = thermalMode ? 1.0 : 0.0;
+});
+
+ui.wireframeBtn.addEventListener('click', () => {
+  wireframeMode = !wireframeMode;
+  ui.wireframeBtn.classList.toggle('active', wireframeMode);
+  hoodWireframe.material.opacity = wireframeMode ? 0.75 : 0.0;
+});
+
+ui.weatherBtn.addEventListener('click', () => toggleRain());
+ui.dockRainBtn.addEventListener('click', () => toggleRain());
+
+ui.audioBtn.addEventListener('click', () => {
+  if (!audioCtx) initAudio();
+  audioMuted = !audioMuted;
+  ui.audioBtn.classList.toggle('active', !audioMuted);
+  ui.audioBtn.textContent = audioMuted ? '🔇' : '🔊';
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+});
+
+ui.codeBtn.addEventListener('click', () => {
+  ui.shaderInspector.classList.toggle('show');
+  ui.codeBtn.classList.toggle('active');
+});
+ui.closeInspectorBtn.addEventListener('click', () => {
+  ui.shaderInspector.classList.remove('show');
+  ui.codeBtn.classList.remove('active');
+});
+
+ui.pauseBtn.addEventListener('click', () => {
+  isPaused = !isPaused;
+  ui.pauseBtn.textContent = isPaused ? '▶' : 'Ⅱ';
+});
+
+document.getElementById('camChase').addEventListener('click', () => setCameraMode(CAM_MODES.CHASE));
+document.getElementById('camHood').addEventListener('click', () => setCameraMode(CAM_MODES.HOOD));
+document.getElementById('camCockpit').addEventListener('click', () => setCameraMode(CAM_MODES.COCKPIT));
+document.getElementById('camOrbit').addEventListener('click', () => setCameraMode(CAM_MODES.ORBIT));
+
+document.querySelectorAll('.color-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+    dot.classList.add('active');
+    const colorHex = dot.getAttribute('data-color');
+    carShaderUniforms.uBaseColor.value.set(colorHex);
+  });
+});
+
+window.addEventListener('keydown', e => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    ui.pauseBtn.click();
+  } else if (e.key === '1') setCameraMode(CAM_MODES.CHASE);
+  else if (e.key === '2') setCameraMode(CAM_MODES.HOOD);
+  else if (e.key === '3') setCameraMode(CAM_MODES.COCKPIT);
+  else if (e.key === '4') setCameraMode(CAM_MODES.ORBIT);
+  else if (e.key === 'w' || e.key === 'W') ui.wireframeBtn.click();
+  else if (e.key === 'r' || e.key === 'R') toggleRain();
+  else if (e.key === 'm' || e.key === 'M') ui.audioBtn.click();
+  else if (e.key === 'i' || e.key === 'I') ui.codeBtn.click();
+  else if (e.key === 'ArrowLeft') {
+    ui.eraSlider.value = Math.max(0, Number(ui.eraSlider.value) - 5);
+    updateEra(Number(ui.eraSlider.value));
+  } else if (e.key === 'ArrowRight') {
+    ui.eraSlider.value = Math.min(100, Number(ui.eraSlider.value) + 5);
+    updateEra(Number(ui.eraSlider.value));
+  }
+});
+
+window.addEventListener('resize', () => {
+  const w = container.clientWidth, h = container.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+
+  dropW = dropCanvas.width = window.innerWidth;
+  dropH = dropCanvas.height = window.innerHeight;
+});
+
+/* =========================================================================
+   10. MAIN SIMULATION & RENDER LOOP
+   ========================================================================= */
+const clock = new THREE.Clock();
+let elapsed = 0;
+let frameCount = 0, lastFpsCheck = performance.now();
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const delta = Math.min(clock.getDelta(), 0.05);
+
+  frameCount++;
+  const now = performance.now();
+  if (now - lastFpsCheck >= 1000) {
+    ui.fpsCount.textContent = `${frameCount} FPS`;
+    frameCount = 0;
+    lastFpsCheck = now;
+  }
+
+  if (!isPaused) {
+    elapsed += delta;
+    carShaderUniforms.uTime.value = elapsed;
+
+    const targetSpeed = 128 + Math.sin(elapsed * 0.9) * 8 + Math.cos(elapsed * 0.3) * 4;
+    ui.speedDisplay.textContent = Math.round(targetSpeed);
+    const rpm = 5800 + (targetSpeed - 120) * 120 + Math.sin(elapsed * 2.5) * 200;
+    ui.rpmDisplay.textContent = Math.round(rpm).toLocaleString();
+    ui.rpmBar.style.width = `${Math.min(100, (rpm / 8500) * 100)}%`;
+
+    updateAudio(rpm);
+
+    // Highway flow velocity
+    const flowSpeed = delta * (targetSpeed / 8.5);
+
+    // Spin wheels smoothly
+    const wheelRot = flowSpeed / wheelRadius;
+    wheels.forEach(w => {
+      w.rotation.x -= wheelRot;
+    });
+
+    // Subtle chassis suspension rumble
+    car.position.y = Math.sin(elapsed * 12.0) * 0.005;
+    car.rotation.z = Math.sin(elapsed * 1.6) * 0.007;
+
+    // Scroll road lane markers
+    markers.forEach(m => {
+      m.position.z += flowSpeed;
+      if (m.position.z > 20) m.position.z -= 192;
+    });
+
+    // Scroll Overhead Gantries
+    gantries.forEach(g => {
+      g.position.z += flowSpeed;
+      if (g.position.z > 22) g.position.z -= 8 * 22;
+    });
+
+    // Scroll Skyline Buildings
+    buildings.forEach(b => {
+      b.position.z += flowSpeed * 0.75;
+      if (b.position.z > 28) b.position.z -= 28 * 9.5;
+    });
+
+    // Animate Rain Particles & Road Puddle Splashes
+    if (rainMode) {
+      const pos = rainGeo.attributes.position.array;
+      for (let r = 0; r < rainCount; r++) {
+        const fallSpeed = rainVelocities[r] * delta;
+        pos[r * 6 + 1] -= fallSpeed;
+        pos[r * 6 + 2] += flowSpeed * 2.8;
+
+        pos[r * 6 + 4] = pos[r * 6 + 1] - 1.1;
+        pos[r * 6 + 5] = pos[r * 6 + 2] + 1.8;
+
+        if (pos[r * 6 + 1] < 0.05 || pos[r * 6 + 2] > 18) {
+          pos[r * 6 + 0] = (Math.random() - 0.5) * 26;
+          pos[r * 6 + 1] = 11 + Math.random() * 4;
+          pos[r * 6 + 2] = -50 - Math.random() * 50;
+          pos[r * 6 + 3] = pos[r * 6 + 0];
+          pos[r * 6 + 4] = pos[r * 6 + 1] - 1.1;
+          pos[r * 6 + 5] = pos[r * 6 + 2] + 1.8;
+        }
+      }
+      rainGeo.attributes.position.needsUpdate = true;
+
+      splashMeshes.forEach(item => {
+        item.life += delta * 1.8;
+        if (item.life > 1.0) {
+          item.life = 0.0;
+          item.mesh.position.set((Math.random() - 0.5) * 12, 0.025, 8 - Math.random() * 70);
+        }
+        item.mesh.scale.setScalar(0.2 + item.life * 1.4);
+        item.mesh.position.z += flowSpeed;
+      });
+
+      updateScreenDrops();
+    }
+  }
+
+  // Camera views
+  if (currentCamMode === CAM_MODES.CHASE) {
+    const sway = Math.sin(elapsed * 0.4) * 0.22;
+    camera.position.set(sway, 2.4, 6.2);
+    camera.lookAt(0, 0.95, -15);
+  } else if (currentCamMode === CAM_MODES.HOOD) {
+    camera.position.set(0, 0.95, 0.1);
+    camera.lookAt(0, 0.75, -20);
+  } else if (currentCamMode === CAM_MODES.COCKPIT) {
+    camera.position.set(-0.25, 1.15, 0.65);
+    camera.lookAt(-0.1, 1.05, -20);
+  } else if (currentCamMode === CAM_MODES.ORBIT) {
+    controls.update();
+  }
+
+  renderer.render(scene, camera);
+}
+
+// Initial setup
+updateEra(100);
+toggleRain(true);
 animate();
 </script>
 </body>
